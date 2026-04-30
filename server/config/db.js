@@ -1,5 +1,15 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://127.0.0.1:27017/devcollab")
-.then(() => console.log("DB Connected"))
-.catch(err => console.log(err));
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 5000,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (err) {
+    console.error(" MongoDB connection failed:", err.message);
+    process.exit(1);
+  }
+};
+
+module.exports = connectDB;
