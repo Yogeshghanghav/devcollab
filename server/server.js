@@ -45,9 +45,9 @@ const start = async () => {
   socketHandler(io);
 
   server.listen(PORT, () => {
-    console.log(`\n🚀 DevCollab Server running on port ${PORT}`);
-    console.log(`⚡ WebSocket ready`);
-    console.log(`🌐 Accepting connections from ${process.env.CLIENT_URL}\n`);
+    console.log(`\nDevCollab Server running on port ${PORT}`);
+    console.log(`WebSocket ready`);
+    console.log(`Accepting connections from ${process.env.CLIENT_URL}\n`);
   });
 
   // Graceful shutdown

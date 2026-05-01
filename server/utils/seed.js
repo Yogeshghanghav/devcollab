@@ -13,7 +13,7 @@ const seedChannels = async () => {
       const existing = await Channel.findOne({ name: ch.name });
       if (!existing) {
         await Channel.create({ ...ch, type: "public", members: [] });
-        console.log(`✅ Channel #${ch.name} created`);
+        console.log(` Channel #${ch.name} created`);
       }
     }
   } catch (err) {

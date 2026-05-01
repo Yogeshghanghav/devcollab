@@ -16,7 +16,6 @@ const ApiLogSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// ✅ FIXED (capital issue)
 ApiLogSchema.index({ createdAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
 ApiLogSchema.index({ createdAt: -1 });
 ApiLogSchema.index({ isError: 1, createdAt: -1 });

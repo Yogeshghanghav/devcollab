@@ -43,5 +43,4 @@ const requireRole = (...roles) => {
   };
 };
 
-// ✅ CLEAN EXPORT
 module.exports = { auth, requireRole };

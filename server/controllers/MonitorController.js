@@ -5,12 +5,17 @@ const Alert = require("../models/Alert");
 const getLogs = async (req, res) => {
   try {
     const { page = 1, limit = 50 } = req.query;
+    const skip = (parseInt(page) - 1) * parseInt(limit);
 
-    const logs = await ApiLog.find()
-      .sort({ createdAt: -1 })
-      .limit(parseInt(limit));
+    const [logs, total] = await Promise.all([
+      ApiLog.find()
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit)),
+      ApiLog.countDocuments(),
+    ]);
 
-    res.json(logs);
+    res.json({ logs, total });
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
   }
@@ -23,10 +28,13 @@ const getStats = async (req, res) => {
     const errors = await ApiLog.countDocuments({ isError: true });
 
     res.json({
-      total,
-      errors,
-      errorRate: total ? (errors / total) * 100 : 0,
-    });
+  summary: {
+    total24h: total,
+    errors24h: errors,
+    errorRate24h: total ? +((errors / total) * 100).toFixed(1) : 0,
+    avgResponseTime: null, // add real calc if you have duration data
+  }
+})
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
   }
@@ -55,7 +63,6 @@ const resolveAlert = async (req, res) => {
   }
 };
 
-// ✅ CLEAN EXPORT
 module.exports = {
   getLogs,
   getStats,
