@@ -1,13 +1,16 @@
 import axios from 'axios'
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+const BASE_URL = import.meta.env.VITE_API_URL
 
 const api = axios.create({ baseURL: BASE_URL })
 
 // Attach JWT token
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
-  if (token) config.headers.Authorization = `Bearer ${token}`
+if (token) {
+    config.headers = config.headers || {}
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 })
 
@@ -22,8 +25,6 @@ api.interceptors.response.use(
     return Promise.reject(err)
   }
 )
-
-// ── Auth ────────────────────────────────────────────
 export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   login:    (data) => api.post('/auth/login', data),
@@ -31,8 +32,6 @@ export const authAPI = {
   getUsers: ()     => api.get('/auth/users'),
   updateRole: (data) => api.patch('/auth/users/role', data),
 }
-
-// ── Chat ────────────────────────────────────────────
 export const chatAPI = {
   getChannels:         ()                   => api.get('/chat/channels'),
   createChannel:       (data)               => api.post('/chat/channels', data),
@@ -40,8 +39,6 @@ export const chatAPI = {
   getChannelMessages:  (channelId, page=1)  => api.get(`/chat/channels/${channelId}/messages?page=${page}`),
   getDirectMessages:   (userId)             => api.get(`/chat/dm/${userId}`),
 }
-
-// ── Monitor ─────────────────────────────────────────
 export const monitorAPI = {
   getStats:      ()       => api.get('/monitor/stats'),
   getLogs:       (params) => api.get('/monitor/logs', { params }),
