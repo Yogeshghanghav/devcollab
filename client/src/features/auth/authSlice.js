@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { authAPI } from '../../services/api'
 import { initSocket, disconnectSocket } from '../../services/socket'
 
-// ── Thunks ───────────────────────────────────────────────
-
 export const loginUser = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
   try {
     const { data } = await authAPI.login(credentials)
@@ -40,8 +38,6 @@ export const fetchUsers = createAsyncThunk('auth/fetchUsers', async () => {
   return data
 })
 
-// ── Slice ─────────────────────────────────────────────────
-
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -50,7 +46,7 @@ const authSlice = createSlice({
     token:   localStorage.getItem('token'),
     loading: false,
     error:   null,
-    ready:   false,   // true after initial /me check
+    ready:   false,  
   },
   reducers: {
     logout(state) {
