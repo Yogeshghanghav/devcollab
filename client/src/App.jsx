@@ -13,8 +13,6 @@ import RegisterPage from "./pages/RegisterPage";
 import ChatPage from "./pages/ChatPage";
 import MonitorPage from "./pages/MonitorPage";
 import AdminPage from "./pages/AdminPage";
-
-// 🔐 Auth initializer (clean + safe)
 function AuthProvider({ children }) {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
@@ -43,11 +41,8 @@ export default function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* 🔓 Public Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-
-        {/* 🔐 Protected Routes */}
         <Route
           path="/app"
           element={
@@ -80,8 +75,6 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-
-        {/* 🔁 Redirects */}
         <Route path="/" element={<Navigate to="/app" replace />} />
         <Route path="*" element={<Navigate to="/app" replace />} />
       </Routes>
