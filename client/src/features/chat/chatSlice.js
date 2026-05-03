@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { chatAPI } from '../../services/api'
 
-// ── Thunks ───────────────────────────────────────────────
-
 export const fetchChannels = createAsyncThunk('chat/fetchChannels', async () => {
   const { data } = await chatAPI.getChannels()
   return data
@@ -26,8 +24,6 @@ export const fetchDirectMessages = createAsyncThunk('chat/fetchDirectMessages', 
   const { data } = await chatAPI.getDirectMessages(userId)
   return { userId, messages: data }
 })
-
-// ── Slice ─────────────────────────────────────────────────
 
 const chatSlice = createSlice({
   name: 'chat',
