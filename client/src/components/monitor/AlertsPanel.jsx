@@ -67,7 +67,7 @@ export default function AlertsPanel() {
           )}
         </h3>
         {active.length === 0
-          ? <p className="text-sm text-text-muted py-4 text-center">✅ No active alerts</p>
+          ? <p className="text-sm text-text-muted py-4 text-center"> No active alerts</p>
           : <div className="flex flex-col gap-2">{active.map(a => <AlertRow key={a._id} alert={a} />)}</div>
         }
       </div>
