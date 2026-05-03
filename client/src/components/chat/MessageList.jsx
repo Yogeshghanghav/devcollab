@@ -10,13 +10,9 @@ export default function MessageList({
   typingUsers = [],
 }) {
   const bottomRef = useRef(null);
-
-  // 🔽 smooth auto-scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length, typingUsers.length]);
-
-  // ⏳ Loading
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center">
@@ -24,8 +20,6 @@ export default function MessageList({
       </div>
     );
   }
-
-  // 💤 Empty state (premium)
   if (!messages.length) {
     return (
       <div className="flex-1 flex items-center justify-center px-4">
@@ -35,14 +29,12 @@ export default function MessageList({
             No messages yet
           </h3>
           <p className="text-xs text-gray-400">
-            Start the conversation 🚀
+            Start the conversation 
           </p>
         </div>
       </div>
     );
   }
-
-  // 📦 Group messages (clean logic)
   const grouped = messages.map((msg, i) => {
     const prev = messages[i - 1];
 
@@ -65,8 +57,6 @@ export default function MessageList({
 
       {/* Spacer for bottom alignment */}
       <div className="flex-1" />
-
-      {/* 💬 Messages */}
       <div className="flex flex-col gap-1">
         {grouped.map((msg) => (
           <div
@@ -80,15 +70,11 @@ export default function MessageList({
           </div>
         ))}
       </div>
-
-      {/* ✨ Typing Indicator */}
       {typingUsers.length > 0 && (
         <div className="flex items-center gap-3 px-4 py-2 mt-2 animate-fade-in">
           <div className="w-8" />
 
           <div className="flex items-center gap-2 text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
-
-            {/* animated dots */}
             <span className="flex gap-1">
               {[0, 1, 2].map((i) => (
                 <span
@@ -106,8 +92,6 @@ export default function MessageList({
           </div>
         </div>
       )}
-
-      {/* 🔽 Scroll anchor */}
       <div ref={bottomRef} />
     </div>
   );
