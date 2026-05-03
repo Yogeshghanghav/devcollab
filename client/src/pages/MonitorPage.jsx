@@ -28,13 +28,8 @@ export default function MonitorPage() {
 
   return (
     <div className="flex-1 overflow-y-auto relative">
-
-      {/* 🔥 Background Glow */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,#6c63ff22,transparent_70%)]" />
-
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
-
-        {/* 🧠 HEADER */}
         <div className="flex items-center justify-between">
 
           <div>
@@ -54,8 +49,6 @@ export default function MonitorPage() {
             Refresh
           </button>
         </div>
-
-        {/* 📊 STATS */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
           <StatCard
@@ -91,8 +84,6 @@ export default function MonitorPage() {
             loading={statsLoading}
           />
         </div>
-
-        {/* 🧩 TABS */}
         <div className="flex gap-2 bg-white/5 backdrop-blur-xl border border-white/10 p-1 rounded-xl w-fit">
 
           {TABS.map((t) => (
@@ -110,8 +101,6 @@ export default function MonitorPage() {
             </button>
           ))}
         </div>
-
-        {/* 📦 CONTENT */}
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-xl animate-fade-in">
 
           {tab === "Overview" && <MonitorCharts />}
