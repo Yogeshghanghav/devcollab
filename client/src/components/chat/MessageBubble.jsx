@@ -19,17 +19,13 @@ export default function MessageBubble({ message, showHeader = true }) {
         isOwn ? "justify-end" : "justify-start"
       } ${showHeader ? "mt-4" : "mt-0.5"}`}
     >
-      {/* 👤 Avatar (left only for others) */}
       {!isOwn && (
         <div className="w-8 flex-shrink-0">
           {showHeader && <Avatar name={name} size="sm" />}
         </div>
       )}
-
-      {/* 💬 Message Block */}
       <div className="flex flex-col max-w-[70%]">
 
-        {/* 🧠 Header */}
         {showHeader && !isOwn && (
           <div className="flex items-center gap-2 mb-1">
             <span className="text-sm font-semibold text-white">
@@ -43,8 +39,6 @@ export default function MessageBubble({ message, showHeader = true }) {
             </span>
           </div>
         )}
-
-        {/* 💬 Bubble */}
         <div
           className={`px-4 py-2 rounded-2xl text-sm leading-relaxed break-words shadow-md transition-all
           ${
@@ -55,8 +49,6 @@ export default function MessageBubble({ message, showHeader = true }) {
         >
           {message.text}
         </div>
-
-        {/* ⏱ time for own message */}
         {isOwn && (
           <span className="text-[11px] text-gray-400 mt-1 self-end opacity-0 group-hover:opacity-100 transition">
             {time}
