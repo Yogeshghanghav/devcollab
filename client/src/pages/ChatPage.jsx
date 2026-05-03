@@ -33,13 +33,9 @@ export default function ChatPage() {
 
   const activeChannel = channels.find((c) => c._id === activeChannelId);
   const activeDmUser = users.find((u) => u._id === activeDmUserId);
-
-  // 📦 Load channels
   useEffect(() => {
     dispatch(fetchChannels());
   }, [dispatch]);
-
-  // 💬 Channel messages
   useEffect(() => {
     if (!activeChannelId) return;
 
@@ -48,14 +44,10 @@ export default function ChatPage() {
     const socket = getSocket();
     socket?.emit("join_channel", activeChannelId);
   }, [dispatch, activeChannelId]);
-
-  // 📩 DM messages
   useEffect(() => {
     if (!activeDmUserId) return;
     dispatch(fetchDirectMessages(activeDmUserId));
   }, [dispatch, activeDmUserId]);
-
-  // 🚀 Send handlers
   const handleChannelSend = (text) => {
     getSocket()?.emit("send_channel_message", {
       channelId: activeChannelId,
@@ -69,8 +61,6 @@ export default function ChatPage() {
       text,
     });
   };
-
-  // 📊 Current messages
   const currentMessages = activeChannelId
     ? messages[activeChannelId] || []
     : activeDmUserId
@@ -80,8 +70,6 @@ export default function ChatPage() {
   const currentTyping = activeChannelId
     ? typingUsers[activeChannelId] || []
     : [];
-
-  // 💤 Empty state
   if (!activeChannelId && !activeDmUserId) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center text-center">
@@ -100,16 +88,10 @@ export default function ChatPage() {
 
   return (
     <div className="flex-1 flex flex-col min-h-0 relative">
-
-      {/* 🔥 Glow Background */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,#6c63ff22,transparent_70%)]" />
-
-      {/* 🧠 Header */}
       <div className="border-b border-white/10 bg-white/5 backdrop-blur-xl">
         <ChannelHeader channel={activeChannel} dmUser={activeDmUser} />
       </div>
-
-      {/* 💬 Messages */}
       <div className="flex-1 overflow-y-auto px-6 py-4">
         <div className="max-w-3xl mx-auto">
           <MessageList
@@ -119,8 +101,6 @@ export default function ChatPage() {
           />
         </div>
       </div>
-
-      {/* ✏️ Input */}
       <div className="border-t border-white/10 bg-white/5 backdrop-blur-xl p-4">
         <div className="max-w-3xl mx-auto">
           <MessageInput
