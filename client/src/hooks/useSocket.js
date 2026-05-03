@@ -14,10 +14,7 @@ export function useSocket() {
     const socket = getSocket()
     if (!socket || !user) return
 
-    // Join all accessible channels
     socket.emit('join_channels')
-
-    // ── Listeners ──────────────────────────────────────
     const onChannelMsg = (msg) => dispatch(addChannelMessage(msg))
 
     const onDirectMsg  = (msg) => {
@@ -25,14 +22,14 @@ export function useSocket() {
       // Toast if sender is not current user
       const senderId = msg.user?._id || msg.user
       if (senderId !== user._id) {
-        toast(`💬 ${msg.userName}: ${msg.text.slice(0, 60)}`, { duration: 3000 })
+        toast(`${msg.userName}: ${msg.text.slice(0, 60)}`, { duration: 3000 })
       }
     }
 
     const onPresence   = (list) => dispatch(setOnlineUsers(list))
     const onAlert      = (alert) => {
       dispatch(addAlert(alert))
-      toast.error(`🚨 ${alert.message}`, { duration: 6000 })
+      toast.error(` ${alert.message}`, { duration: 6000 })
     }
 
     const onTypingStart = ({ userId, name, channelId }) => {
