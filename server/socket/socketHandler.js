@@ -2,12 +2,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Message = require("../models/Message");
 const Channel = require("../models/Channel");
-
-// Online users map
 const onlineUsers = new Map();
 
 const socketHandler = (io) => {
-  // ── AUTH MIDDLEWARE ─────────────────────────────────────
   io.use(async (socket, next) => {
     try {
       let token = socket.handshake.auth?.token;
@@ -34,12 +31,10 @@ const socketHandler = (io) => {
       next(new Error("Invalid token"));
     }
   });
-
-  // ── CONNECTION ──────────────────────────────────────────
   io.on("connection", async (socket) => {
     const { id: userId, name, role } = socket.user;
 
-    console.log(`🟢 ${name} connected`);
+    console.log(` ${name} connected`);
 
     // Mark user online
     onlineUsers.set(userId, {
@@ -61,8 +56,6 @@ const socketHandler = (io) => {
         ...data,
       }))
     );
-
-    // ── AUTO JOIN CHANNELS (IMPORTANT FIX) ────────────────
     try {
       const channels = await Channel.find({
         $or: [{ type: "public" }, { members: userId }],
@@ -74,14 +67,10 @@ const socketHandler = (io) => {
     } catch (err) {
       console.error("Auto join error:", err);
     }
-
-    // ── JOIN SINGLE CHANNEL ───────────────────────────────
     socket.on("join_channel", (channelId) => {
       if (!channelId) return;
       socket.join(`channel:${channelId}`);
     });
-
-    // ── CHANNEL MESSAGE ───────────────────────────────────
     socket.on("send_channel_message", async ({ channelId, text }) => {
       try {
         if (!text?.trim()) return;
@@ -118,8 +107,6 @@ const socketHandler = (io) => {
         socket.emit("error", { msg: "Failed to send message" });
       }
     });
-
-    // ── DIRECT MESSAGE ────────────────────────────────────
     socket.on("send_direct_message", async ({ recipientId, text }) => {
       try {
         if (!text?.trim()) return;
@@ -148,8 +135,6 @@ const socketHandler = (io) => {
         socket.emit("error", { msg: "Failed to send message" });
       }
     });
-
-    // ── TYPING ────────────────────────────────────────────
     socket.on("typing_start", ({ channelId }) => {
       socket.to(`channel:${channelId}`).emit("user_typing", {
         userId,
@@ -162,10 +147,8 @@ const socketHandler = (io) => {
         userId,
       });
     });
-
-    // ── DISCONNECT ────────────────────────────────────────
     socket.on("disconnect", async () => {
-      console.log(`🔴 ${name} disconnected`);
+      console.log(` ${name} disconnected`);
 
       onlineUsers.delete(userId);
 
