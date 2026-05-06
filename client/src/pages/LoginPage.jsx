@@ -46,8 +46,8 @@ export default function LoginPage() {
               { label: '🔔', text: 'Smart alert system' },
               { label: '👥', text: 'Role-based access control' },
             ].map((f) => (
-              <div key={f.label} className="flex items-center gap-3 text-sm text-text-secondary">
-                <span className="text-base">{f.label}</span>
+              <div key={f.text} className="flex items-center gap-3 text-sm text-text-secondary">
+                <span className="text-base" role="img" aria-label={f.text}>{f.label}</span>
                 {f.text}
               </div>
             ))}
@@ -65,15 +65,20 @@ export default function LoginPage() {
 
           <form onSubmit={handle} className="flex flex-col gap-4">
             {error && (
-              <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2.5 text-sm text-red-400 animate-fade-in">
+              <div role="alert" className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2.5 text-sm text-red-400 animate-fade-in">
                 {error}
               </div>
             )}
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-text-muted uppercase tracking-wider">Email</label>
+              <label htmlFor="email-input" className="text-xs font-medium text-text-muted uppercase tracking-wider">
+                Email Address
+              </label>
               <input
-                type="email" required
+                id="email-input"
+                name="email"
+                type="email" 
+                required
                 value={form.email}
                 onChange={e => setForm(f => ({...f, email: e.target.value}))}
                 placeholder="you@company.com"
@@ -83,9 +88,14 @@ export default function LoginPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-text-muted uppercase tracking-wider">Password</label>
+              <label htmlFor="password-input" className="text-xs font-medium text-text-muted uppercase tracking-wider">
+                Password
+              </label>
               <input
-                type="password" required
+                id="password-input"
+                name="password"
+                type="password" 
+                required
                 value={form.password}
                 onChange={e => setForm(f => ({...f, password: e.target.value}))}
                 placeholder="••••••••"
@@ -94,7 +104,11 @@ export default function LoginPage() {
               />
             </div>
 
-            <button type="submit" disabled={loading} className="btn-primary w-full py-2.5 mt-1 flex items-center justify-center gap-2">
+            <button 
+              type="submit" 
+              disabled={loading} 
+              className="btn-primary w-full py-2.5 mt-1 flex items-center justify-center gap-2"
+            >
               {loading ? <><Spinner size="sm" /> Signing in…</> : 'Sign In'}
             </button>
           </form>
