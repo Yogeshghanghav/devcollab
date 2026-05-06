@@ -46,7 +46,7 @@ const authSlice = createSlice({
     token:   localStorage.getItem('token'),
     loading: false,
     error:   null,
-    ready:   false,  
+    ready:   false,
   },
   reducers: {
     logout(state) {
@@ -57,24 +57,27 @@ const authSlice = createSlice({
       disconnectSocket()
     },
     clearError(state) { state.error = null },
+    // NAVIN: Ready state manually update karnyasathi
+    setReady(state, action) {
+      state.ready = action.payload
+    }
   },
   extraReducers: (b) => {
-    // login
     b.addCase(loginUser.pending,    (s)    => { s.loading = true;  s.error = null })
     b.addCase(loginUser.fulfilled,  (s, a) => { s.loading = false; s.user = a.payload.user; s.token = a.payload.token; s.ready = true })
     b.addCase(loginUser.rejected,   (s, a) => { s.loading = false; s.error = a.payload; s.ready = true })
-    // register
+    
     b.addCase(registerUser.pending,   (s)    => { s.loading = true;  s.error = null })
     b.addCase(registerUser.fulfilled, (s, a) => { s.loading = false; s.user = a.payload.user; s.token = a.payload.token; s.ready = true })
     b.addCase(registerUser.rejected,  (s, a) => { s.loading = false; s.error = a.payload; s.ready = true })
-    // fetchMe
+    
     b.addCase(fetchMe.pending,    (s)    => { s.loading = true })
     b.addCase(fetchMe.fulfilled,  (s, a) => { s.loading = false; s.user = a.payload; s.ready = true })
     b.addCase(fetchMe.rejected,   (s)    => { s.loading = false; s.user = null; s.token = null; s.ready = true; localStorage.removeItem('token') })
-    // fetchUsers
+    
     b.addCase(fetchUsers.fulfilled, (s, a) => { s.users = a.payload })
   },
 })
 
-export const { logout, clearError } = authSlice.actions
+export const { logout, clearError, setReady } = authSlice.actions
 export default authSlice.reducer
