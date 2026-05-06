@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchMe, fetchUsers, logout } from "./features/auth/authSlice";
+import { fetchMe, fetchUsers, logout, setReady } from "./features/auth/authSlice";
 import { initSocket } from "./services/socket";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -13,12 +13,16 @@ import RegisterPage from "./pages/RegisterPage";
 import ChatPage from "./pages/ChatPage";
 import MonitorPage from "./pages/MonitorPage";
 import AdminPage from "./pages/AdminPage";
+
 function AuthProvider({ children }) {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      dispatch(setReady(true));
+      return;
+    }
 
     const init = async () => {
       try {
@@ -41,6 +45,7 @@ export default function App() {
   return (
     <AuthProvider>
       <Routes>
+        {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route
