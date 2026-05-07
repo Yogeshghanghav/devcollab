@@ -35,8 +35,6 @@ const socketHandler = (io) => {
     const { id: userId, name, role } = socket.user;
 
     console.log(` ${name} connected`);
-
-    // Mark user online
     onlineUsers.set(userId, {
       socketId: socket.id,
       name,
@@ -47,8 +45,6 @@ const socketHandler = (io) => {
       isOnline: true,
       socketId: socket.id,
     });
-
-    // Broadcast presence
     io.emit(
       "presence_update",
       Array.from(onlineUsers.entries()).map(([id, data]) => ({
