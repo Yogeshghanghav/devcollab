@@ -79,8 +79,6 @@ const socketHandler = (io) => {
         if (!channel) {
           return socket.emit("error", { msg: "Channel not found" });
         }
-
-        // Optional security (private channels)
         if (
           channel.type === "private" &&
           !channel.members.includes(userId)
